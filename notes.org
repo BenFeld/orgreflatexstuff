@@ -1,0 +1,115 @@
+* Admin                                                            :noexport:
+** Marginnote
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \renewcommand*{\marginfont}{\footnotesize\sffamily}
+** Options
+#+OPTIONS: toc:t
+#+AUTHOR: Ben Feld
+#+TITLE: ORG-REF Notes file
+** Latex
+
+#+LATEX_HEADER: \usepackage[style=oscola]{biblatex}
+#+LATEX_CLASS_OPTIONS: [article]
+#+LATEX_HEADER: \usepackage{mathpazo}
+#+Latex_header: \addbibresource{~/Dropbox/bibliography/legal.bib}
+#+Latex_header: \DeclareCiteCommand{\citeshort}
+#+Latex_header:   {\boolfalse{citetracker}%
+#+Latex_header:    \boolfalse{pagetracker}%
+#+Latex_header:    \usebibmacro{prenote}}
+#+Latex_header:   {\printfield[title]{shorttitle}}
+#+Latex_header:   {\multicitedelim}
+#+Latex_header:   {\usebibmacro{postnote}}
+#+LATEX_HEADER: \makeatletter
+#+LATEX_HEADER: \renewcommand*\l@section{\@dottedtocline{1}{1.5em}{2.3em}}
+#+LATEX_HEADER: \makeatother
+
+
+#+Latex_header: \DeclareCiteCommand{\citedouble}
+#+Latex_header:   {\boolfalse{citetracker}%
+#+Latex_header:    \boolfalse{pagetracker}%
+#+Latex_header:    \usebibmacro{prenote}}
+#+Latex_header:   {\printfield[title]{shorttitle}\footcite}
+#+Latex_header:   {\multicitedelim}
+#+Latex_header:   {\usebibmacro{postnote}}
+
+
+#+LATEX_HEADER: \usepackage[table]{xcolor}
+#+LATEX_HEADER: \usepackage{framed}
+#+LATEX_HEADER: \usepackage[strict]{changepage}    
+#+LATEX_HEADER: 
+#+LATEX_HEADER: %Defining colour with different models.
+#+LATEX_HEADER: \definecolor{mypink1}{rgb}{0.858, 0.188, 0.478}
+#+LATEX_HEADER: \definecolor{mypink2}{RGB}{219, 48, 122}
+#+LATEX_HEADER: \definecolor{mypink3}{cmyk}{0, 0.7808, 0.4429, 0.1412}
+#+LATEX_HEADER: \definecolor{mygray}{gray}{0.8}
+#+LATEX_HEADER: 
+#+LATEX_HEADER: \definecolor{formalshade}{rgb}{0.95,0.95,1}    
+#+LATEX_HEADER: 
+#+LATEX_HEADER: \newenvironment{formal}{
+#+LATEX_HEADER:   \def\FrameCommand{
+#+LATEX_HEADER:     \hspace{1pt}
+#+LATEX_HEADER:     {\color{mygray}\vrule width 6pt}
+#+LATEX_HEADER:     {\color{formalshade}\vrule width 4pt}
+#+LATEX_HEADER:     \colorbox{formalshade}
+#+LATEX_HEADER:   }
+#+LATEX_HEADER:   \MakeFramed{\advance\hsize-\width\FrameRestore}
+#+LATEX_HEADER:   \noindent\hspace{-4.55pt}% disable indenting first paragraph
+#+LATEX_HEADER:   \begin{adjustwidth}{}{7pt}
+#+LATEX_HEADER:   \vspace{2pt}\vspace{2pt}
+#+LATEX_HEADER: }
+#+LATEX_HEADER: {
+#+LATEX_HEADER:   \vspace{2pt}\end{adjustwidth}\endMakeFramed
+#+LATEX_HEADER: }
+#+LATEX_HEADER: 
+#+LATEX_HEADER:\newcounter{definitio}    
+
+#+LATEX_HEADER: \newcommand\ontheright[1]{{\unskip\nobreak\hfill\penalty50\ 
+#+LATEX_HEADER:   \mbox{}\nobreak\hfill#1\parfillskip=0pt \finalhyphendemerits=0\par}}
+#+LATEX_HEADER:
+#+LATEX_HEADER:\newenvironment{formalcite}[2]%
+#+LATEX_HEADER:{\newcommand{\foot}{\ontheright{\footnotesize{-- \textsc{#1} in \citeshort{#2}}}}\begin{formal}"}%
+#+LATEX_HEADER:{"\newline\foot\end{formal}}
+ 
+#+MACRO: bformalcite \begin{formalcite}{$1}{$2}\marginnote{\citeshort{$2}}
+#+MACRO: eformalcite \end{formalcite}
+
+#+LATEX_HEADER: \linespread{1.3}
+
+
+** code blocks
+
+*** latex-link
+#+name: latex-link
+#+begin_src emacs-lisp
+(org-add-link-type
+"latex" nil
+(lambda (path desc format)
+  (when(eq format 'latex)
+    (format "\\%s{%s}" path desc))))
+#+end_src
+
+#+RESULTS: latex-link
+: Created latex link.
+
+*** latex-env
+#+name: latex-env
+#+begin_src emacs-lisp
+(org-add-link-type
+"latexenv" nil
+(lambda (path desc format)
+  (when(eq format 'latex)
+    (format "\\begin{%s}%s\\end{%s}" path desc path))))
+#+end_src
+
+*** Formal cite
+# #+name: formalcite
+# #+begin_src emacs-lisp
+# (org-add-link-type
+# "formalcite" nil
+# (lambda (path desc quote format)
+#   (when(eq format 'latex)
+#     (format "\\begin{formalcite}{%s}{%s}%s\\end{formalcite}" path desc quote))))
+# #+end_src
+
+* Notes
+
